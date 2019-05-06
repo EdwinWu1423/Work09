@@ -30,12 +30,11 @@ def get_lighting(normal, view, ambient, light, areflect, dreflect, sreflect ):
              limit_color(int(a[1] + d[1] + s[1])),
              limit_color(int(a[2] + d[2] + s[2])),
            ]
-
 def calculate_ambient(alight, areflect):
-    return [ limit_color(alight[0] * areflect[0]),
-             limit_color(alight[1] * areflect[1]),
-             limit_color(alight[2] * areflect[2]),
-           ]
+    return [alight[0] * areflect[0],
+             alight[1] * areflect[1],
+             alight[2] * areflect[2]]
+
 
 def calculate_diffuse(light, dreflect, normal):
     normalize(light[0])
@@ -54,13 +53,13 @@ def calculate_specular(light, sreflect, view, normal):
                        normal[1] * dp - light[0][1],
                        normal[2] * dp - light[0][2],
                      ]
-    r = dot_product(dir,view)
-    if r < 0:
-      r = 0
-    r = math.pow(r,4)
-    return [ limit_color(light[1][0] * sreflect[0] * r),
-             limit_color(light[1][1] * sreflect[1] * r),
-             limit_color(light[1][2] * sreflect[2] * r),
+    d = dot_product(dir,view)
+    if d < 0:
+      d = 0
+
+    return [ limit_color(light[1][0] * sreflect[0] * d),
+             limit_color(light[1][1] * sreflect[1] * d),
+             limit_color(light[1][2] * sreflect[2] * d),
            ]
 
 def limit_color(color):
